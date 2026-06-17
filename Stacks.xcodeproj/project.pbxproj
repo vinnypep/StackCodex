@@ -59,47 +59,47 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B00000000000000000000001 /* StacksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StacksApp.swift; sourceTree = "<group>"; };
-		B00000000000000000000002 /* AuthSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/AuthSession.swift; sourceTree = "<group>"; };
-		B00000000000000000000003 /* ProductSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ProductSearchResult.swift; sourceTree = "<group>"; };
-		B00000000000000000000004 /* SocialModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/SocialModels.swift; sourceTree = "<group>"; };
-		B00000000000000000000005 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/Stack.swift; sourceTree = "<group>"; };
-		B00000000000000000000006 /* StackItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/StackItem.swift; sourceTree = "<group>"; };
-		B00000000000000000000007 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/UserProfile.swift; sourceTree = "<group>"; };
-		B00000000000000000000008 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/AppError.swift; sourceTree = "<group>"; };
-		B00000000000000000000009 /* AppServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/AppServices.swift; sourceTree = "<group>"; };
-		B0000000000000000000000A /* MockSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/MockSeedData.swift; sourceTree = "<group>"; };
-		B0000000000000000000000B /* MockServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/MockServices.swift; sourceTree = "<group>"; };
-		B0000000000000000000000C /* ProductionServicePlaceholders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ProductionServicePlaceholders.swift; sourceTree = "<group>"; };
-		B0000000000000000000000D /* ServiceProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ServiceProtocols.swift; sourceTree = "<group>"; };
-		B0000000000000000000000E /* AddItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/AddItemViewModel.swift; sourceTree = "<group>"; };
-		B0000000000000000000000F /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/AppSession.swift; sourceTree = "<group>"; };
-		B00000000000000000000010 /* DiscoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/DiscoverViewModel.swift; sourceTree = "<group>"; };
-		B00000000000000000000011 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/HomeViewModel.swift; sourceTree = "<group>"; };
-		B00000000000000000000012 /* StackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/StackDetailViewModel.swift; sourceTree = "<group>"; };
-		B00000000000000000000013 /* Color+Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/Color+Stacks.swift; sourceTree = "<group>"; };
-		B00000000000000000000014 /* Date+Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/Date+Stacks.swift; sourceTree = "<group>"; };
-		B00000000000000000000015 /* Font+Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/Font+Stacks.swift; sourceTree = "<group>"; };
-		B00000000000000000000016 /* View+Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/View+Glass.swift; sourceTree = "<group>"; };
-		B00000000000000000000017 /* AppShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/AppShellView.swift; sourceTree = "<group>"; };
-		B00000000000000000000018 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/RootView.swift; sourceTree = "<group>"; };
-		B00000000000000000000019 /* BlackPillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/BlackPillButton.swift; sourceTree = "<group>"; };
-		B0000000000000000000001A /* GlassCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/GlassCircleButton.swift; sourceTree = "<group>"; };
-		B0000000000000000000001B /* LoadingAndEmptyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/LoadingAndEmptyViews.swift; sourceTree = "<group>"; };
-		B0000000000000000000001C /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/PrimaryButton.swift; sourceTree = "<group>"; };
-		B0000000000000000000001D /* StickerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/StickerImageView.swift; sourceTree = "<group>"; };
-		B0000000000000000000001E /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Discover/DiscoverView.swift; sourceTree = "<group>"; };
-		B0000000000000000000001F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Home/HomeView.swift; sourceTree = "<group>"; };
-		B00000000000000000000020 /* EmailSignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Onboarding/EmailSignInSheet.swift; sourceTree = "<group>"; };
-		B00000000000000000000021 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Onboarding/OnboardingView.swift; sourceTree = "<group>"; };
-		B00000000000000000000022 /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Product/ProductDetailView.swift; sourceTree = "<group>"; };
-		B00000000000000000000023 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Profile/ProfileView.swift; sourceTree = "<group>"; };
-		B00000000000000000000024 /* AddItemSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Stack/AddItemSheets.swift; sourceTree = "<group>"; };
-		B00000000000000000000025 /* StackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Stack/StackDetailView.swift; sourceTree = "<group>"; };
-		B00000000000000000000026 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B00000000000000000000027 /* StacksModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StacksModelTests.swift; sourceTree = "<group>"; };
-		B00000000000000000000028 /* Stacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B00000000000000000000029 /* StacksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StacksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000001 /* StacksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "StacksApp.swift"; sourceTree = "<group>"; };
+		B00000000000000000000002 /* AuthSession.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Models/AuthSession.swift"; sourceTree = "<group>"; };
+		B00000000000000000000003 /* ProductSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Models/ProductSearchResult.swift"; sourceTree = "<group>"; };
+		B00000000000000000000004 /* SocialModels.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Models/SocialModels.swift"; sourceTree = "<group>"; };
+		B00000000000000000000005 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Models/Stack.swift"; sourceTree = "<group>"; };
+		B00000000000000000000006 /* StackItem.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Models/StackItem.swift"; sourceTree = "<group>"; };
+		B00000000000000000000007 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Models/UserProfile.swift"; sourceTree = "<group>"; };
+		B00000000000000000000008 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/AppError.swift"; sourceTree = "<group>"; };
+		B00000000000000000000009 /* AppServices.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/AppServices.swift"; sourceTree = "<group>"; };
+		B0000000000000000000000A /* MockSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/MockSeedData.swift"; sourceTree = "<group>"; };
+		B0000000000000000000000B /* MockServices.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/MockServices.swift"; sourceTree = "<group>"; };
+		B0000000000000000000000C /* ProductionServicePlaceholders.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/ProductionServicePlaceholders.swift"; sourceTree = "<group>"; };
+		B0000000000000000000000D /* ServiceProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/ServiceProtocols.swift"; sourceTree = "<group>"; };
+		B0000000000000000000000E /* AddItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "ViewModels/AddItemViewModel.swift"; sourceTree = "<group>"; };
+		B0000000000000000000000F /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "ViewModels/AppSession.swift"; sourceTree = "<group>"; };
+		B00000000000000000000010 /* DiscoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "ViewModels/DiscoverViewModel.swift"; sourceTree = "<group>"; };
+		B00000000000000000000011 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "ViewModels/HomeViewModel.swift"; sourceTree = "<group>"; };
+		B00000000000000000000012 /* StackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "ViewModels/StackDetailViewModel.swift"; sourceTree = "<group>"; };
+		B00000000000000000000013 /* Color+Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Extensions/Color+Stacks.swift"; sourceTree = "<group>"; };
+		B00000000000000000000014 /* Date+Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Extensions/Date+Stacks.swift"; sourceTree = "<group>"; };
+		B00000000000000000000015 /* Font+Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Extensions/Font+Stacks.swift"; sourceTree = "<group>"; };
+		B00000000000000000000016 /* View+Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Extensions/View+Glass.swift"; sourceTree = "<group>"; };
+		B00000000000000000000017 /* AppShellView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/AppShellView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000018 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/RootView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000019 /* BlackPillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Components/BlackPillButton.swift"; sourceTree = "<group>"; };
+		B0000000000000000000001A /* GlassCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Components/GlassCircleButton.swift"; sourceTree = "<group>"; };
+		B0000000000000000000001B /* LoadingAndEmptyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Components/LoadingAndEmptyViews.swift"; sourceTree = "<group>"; };
+		B0000000000000000000001C /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Components/PrimaryButton.swift"; sourceTree = "<group>"; };
+		B0000000000000000000001D /* StickerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Components/StickerImageView.swift"; sourceTree = "<group>"; };
+		B0000000000000000000001E /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Discover/DiscoverView.swift"; sourceTree = "<group>"; };
+		B0000000000000000000001F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Home/HomeView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000020 /* EmailSignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Onboarding/EmailSignInSheet.swift"; sourceTree = "<group>"; };
+		B00000000000000000000021 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Onboarding/OnboardingView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000022 /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Product/ProductDetailView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000023 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Profile/ProfileView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000024 /* AddItemSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Stack/AddItemSheets.swift"; sourceTree = "<group>"; };
+		B00000000000000000000025 /* StackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Views/Stack/StackDetailView.swift"; sourceTree = "<group>"; };
+		B00000000000000000000026 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = "folder.assetcatalog"; path = "Assets.xcassets"; sourceTree = "<group>"; };
+		B00000000000000000000027 /* StacksModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "StacksModelTests.swift"; sourceTree = "<group>"; };
+		B00000000000000000000028 /* Stacks.app */ = {isa = PBXFileReference; explicitFileType = "wrapper.application"; includeInIndex = 0; path = "Stacks.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000029 /* StacksTests.xctest */ = {isa = PBXFileReference; explicitFileType = "wrapper.cfbundle"; includeInIndex = 0; path = "StacksTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,7 +159,7 @@
 				B00000000000000000000025 /* StackDetailView.swift */,
 				B00000000000000000000026 /* Assets.xcassets */,
 			);
-			path = Stacks;
+			path = "Stacks";
 			sourceTree = "<group>";
 		};
 		D00000000000000000000004 /* StacksTests */ = {
@@ -167,7 +167,7 @@
 			children = (
 				B00000000000000000000027 /* StacksModelTests.swift */,
 			);
-			path = StacksTests;
+			path = "StacksTests";
 			sourceTree = "<group>";
 		};
 		D00000000000000000000005 /* Products */ = {
@@ -184,7 +184,7 @@
 /* Begin PBXNativeTarget section */
 		E00000000000000000000001 /* Stacks */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = G00000000000000000000003 /* Build configuration list for PBXNativeTarget "Stacks" */;
+			buildConfigurationList = 90000000000000000000003 /* Build configuration list for PBXNativeTarget "Stacks" */;
 			buildPhases = (
 				F00000000000000000000003 /* Sources */,
 				F00000000000000000000001 /* Frameworks */,
@@ -199,7 +199,7 @@
 		};
 		E00000000000000000000002 /* StacksTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = G00000000000000000000004 /* Build configuration list for PBXNativeTarget "StacksTests" */;
+			buildConfigurationList = 90000000000000000000004 /* Build configuration list for PBXNativeTarget "StacksTests" */;
 			buildPhases = (
 				F00000000000000000000005 /* Sources */,
 				F00000000000000000000002 /* Frameworks */,
@@ -233,7 +233,7 @@
 					};
 				};
 			};
-			buildConfigurationList = G00000000000000000000002 /* Build configuration list for PBXProject "Stacks" */;
+			buildConfigurationList = 90000000000000000000002 /* Build configuration list for PBXProject "Stacks" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -333,7 +333,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		G00000000000000000000005 /* Debug */ = {
+		90000000000000000000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -394,7 +394,7 @@
 			};
 			name = Debug;
 		};
-		G00000000000000000000006 /* Release */ = {
+		90000000000000000000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -449,7 +449,7 @@
 			};
 			name = Release;
 		};
-		G00000000000000000000007 /* Debug */ = {
+		90000000000000000000007 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -473,7 +473,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.stacks;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.stacks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -481,7 +481,7 @@
 			};
 			name = Debug;
 		};
-		G00000000000000000000008 /* Release */ = {
+		90000000000000000000008 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -505,7 +505,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.stacks;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.stacks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -513,7 +513,7 @@
 			};
 			name = Release;
 		};
-		G00000000000000000000009 /* Debug */ = {
+		90000000000000000000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -528,7 +528,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.stacks.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.stacks.tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -536,7 +536,7 @@
 			};
 			name = Debug;
 		};
-		G0000000000000000000000A /* Release */ = {
+		9000000000000000000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -551,7 +551,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.stacks.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.stacks.tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -562,29 +562,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		G00000000000000000000002 /* Build configuration list for PBXProject "Stacks" */ = {
+		90000000000000000000002 /* Build configuration list for PBXProject "Stacks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				G00000000000000000000005 /* Debug */,
-				G00000000000000000000006 /* Release */,
+				90000000000000000000005 /* Debug */,
+				90000000000000000000006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		G00000000000000000000003 /* Build configuration list for PBXNativeTarget "Stacks" */ = {
+		90000000000000000000003 /* Build configuration list for PBXNativeTarget "Stacks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				G00000000000000000000007 /* Debug */,
-				G00000000000000000000008 /* Release */,
+				90000000000000000000007 /* Debug */,
+				90000000000000000000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		G00000000000000000000004 /* Build configuration list for PBXNativeTarget "StacksTests" */ = {
+		90000000000000000000004 /* Build configuration list for PBXNativeTarget "StacksTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				G00000000000000000000009 /* Debug */,
-				G0000000000000000000000A /* Release */,
+				90000000000000000000009 /* Debug */,
+				9000000000000000000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
