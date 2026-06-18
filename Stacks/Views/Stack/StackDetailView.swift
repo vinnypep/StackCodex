@@ -34,7 +34,7 @@ struct StackDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                StackHeaderView(
+                EditorialStackHeaderView(
                     stack: viewModel.stack,
                     isOwner: session.currentUser?.id == viewModel.stack.ownerID,
                     onAdd: {
@@ -49,11 +49,13 @@ struct StackDetailView: View {
                         services.haptics.impact(.medium)
                     }
                 )
-                .padding(.horizontal, 28)
-                .padding(.top, 28)
+                .padding(.horizontal, 24)
+                .padding(.top, 18)
 
-                StickerCanvasView(items: viewModel.stack.items, onTap: onOpenProduct)
-                    .frame(height: 1060)
+                EditorialProductGridView(items: viewModel.stack.items, onTap: onOpenProduct)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 58)
+                    .padding(.bottom, 56)
             }
         }
         .background(Color.white.ignoresSafeArea())
@@ -113,7 +115,7 @@ struct StackDetailView: View {
     }
 }
 
-private struct StackHeaderView: View {
+private struct EditorialStackHeaderView: View {
     let stack: Stack
     let isOwner: Bool
     let onAdd: () -> Void
@@ -121,86 +123,96 @@ private struct StackHeaderView: View {
     let onFollow: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 22) {
-            HStack(alignment: .top, spacing: 16) {
-                Text(stack.displayTitle)
-                    .font(.stacksDisplay(size: 74, weight: .bold))
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .top, spacing: 10) {
+                Text(stack.title)
+                    .font(.stacksDisplay(size: 88, weight: .black))
                     .foregroundStyle(Color.stacksInk)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.32)
+                    .minimumScaleFactor(0.28)
                     .allowsTightening(true)
 
-                Spacer(minLength: 8)
+                Spacer(minLength: 0)
 
-                HStack(spacing: 10) {
-                    GlassCircleButton(systemImage: "plus", accessibilityLabel: "Add item", size: 52, iconSize: 20, action: onAdd)
-                    GlassCircleButton(systemImage: "ellipsis", accessibilityLabel: "More", size: 52, iconSize: 20, action: onMore)
+                HStack(spacing: 8) {
+                    if isOwner {
+                        Button(action: onAdd) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(Color.stacksInk)
+                                .frame(width: 38, height: 38)
+                                .background(Color.black.opacity(0.055), in: Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Add item")
+                    }
+
+                    Button(action: onMore) {
+                        Image(systemName: "ellipsis")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundStyle(Color.stacksInk)
+                            .frame(width: 38, height: 38)
+                            .background(Color.black.opacity(0.055), in: Circle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("More")
                 }
+                .padding(.top, 14)
             }
 
-            HStack(alignment: .center, spacing: 10) {
-                AvatarView(profile: stack.author, size: 30)
-
-                Text(stack.author.displayName)
-                    .font(.stacksText(size: 28, weight: .semibold))
-                    .foregroundStyle(Color.stacksInk)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.62)
-
-                Spacer()
-
-                Text(stack.createdAt.stackHeaderDate)
-                    .font(.stacksText(size: 22, weight: .regular))
-                    .foregroundStyle(Color.stacksMutedInk)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-            }
-
-            Rectangle()
-                .fill(Color.stacksDivider)
-                .frame(height: 1)
-
-            if !isOwner {
-                BlackPillButton(
-                    title: stack.isFollowingAuthor ? "Following" : "Follow",
-                    systemImage: stack.isFollowingAuthor ? "checkmark" : "plus",
-                    action: onFollow
-                )
-            }
+            Text(stackDescription)
+                .font(.stacksText(size: 15, weight: .black))
+                .foregroundStyle(Color.stacksInk)
+                .textCase(.uppercase)
+                .lineLimit(4)
+                .minimumScaleFactor(0.72)
+                .allowsTightening(true)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.trailing, 24)
         }
+    }
+
+    private var stackDescription: String {
+        let cleanSummary = stack.summary.trimmingCharacters(in: .whitespacesAndNewlines)
+        if cleanSummary.isEmpty {
+            return "\(stack.author.displayName)'s curated stack of standout pieces, saved links, and favorite finds."
+        }
+        return cleanSummary
     }
 }
 
-private struct StickerCanvasView: View {
+private struct EditorialProductGridView: View {
     let items: [StackItem]
     let onTap: (StackItem) -> Void
 
     var body: some View {
         GeometryReader { proxy in
-            ZStack(alignment: .topLeading) {
-                Color.white
+            let columnSpacing = max(18, proxy.size.width * 0.055)
+            let rowSpacing = max(48, proxy.size.width * 0.14)
+            let itemSize = max(68, (proxy.size.width - columnSpacing * 3) / 4)
+            let columns = Array(
+                repeating: GridItem(.flexible(minimum: 54, maximum: itemSize), spacing: columnSpacing, alignment: .center),
+                count: 4
+            )
 
+            LazyVGrid(columns: columns, alignment: .center, spacing: rowSpacing) {
                 ForEach(items) { item in
-                    Button {
-                        onTap(item)
-                    } label: {
-                        StickerImageView(item: item, size: stickerSize(for: item, canvas: proxy.size))
-                            .rotationEffect(.degrees(item.placement.rotationDegrees))
+                    Button(action: { onTap(item) }) {
+                        StickerImageView(item: item, size: min(138, itemSize * 1.22))
+                            .rotationEffect(.degrees(0))
+                            .frame(width: itemSize, height: itemSize * 1.18)
                     }
                     .buttonStyle(.plain)
-                    .position(
-                        x: proxy.size.width * item.placement.xRatio,
-                        y: proxy.size.height * item.placement.yRatio
-                    )
                     .zIndex(item.removalStatus.isWorking ? 20 : 1)
                 }
             }
         }
+        .frame(minHeight: gridHeight)
     }
 
-    private func stickerSize(for item: StackItem, canvas: CGSize) -> CGFloat {
-        let base = min(canvas.width, 430) * 0.24
-        return max(62, min(158, base * item.placement.scale))
+    private var gridHeight: CGFloat {
+        let rows = max(1, Int(ceil(Double(items.count) / 4.0)))
+        return CGFloat(rows) * 138 + CGFloat(max(0, rows - 1)) * 54
     }
 }
 
