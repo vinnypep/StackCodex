@@ -45,11 +45,8 @@ struct StackDetailView: View {
                         services.haptics.impact(.light)
                         sheet = .more
                     },
-                    onPrimary: {
+                    onFollow: {
                         services.haptics.impact(.medium)
-                        if session.currentUser?.id == viewModel.stack.ownerID {
-                            sheet = .addOptions
-                        }
                     }
                 )
                 .padding(.horizontal, 28)
@@ -121,40 +118,39 @@ private struct StackHeaderView: View {
     let isOwner: Bool
     let onAdd: () -> Void
     let onMore: () -> Void
-    let onPrimary: () -> Void
+    let onFollow: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 22) {
             HStack(alignment: .top, spacing: 16) {
                 Text(stack.displayTitle)
-                    .font(.stacksDisplay(size: stack.displayTitle.count > 12 ? 54 : 64, weight: .bold))
+                    .font(.stacksDisplay(size: 74, weight: .bold))
                     .foregroundStyle(Color.stacksInk)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.62)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.32)
+                    .allowsTightening(true)
 
                 Spacer(minLength: 8)
 
-                HStack(spacing: 14) {
-                    GlassCircleButton(systemImage: "plus", accessibilityLabel: "Add item", action: onAdd)
-                    GlassCircleButton(systemImage: "ellipsis", accessibilityLabel: "More", action: onMore)
+                HStack(spacing: 10) {
+                    GlassCircleButton(systemImage: "plus", accessibilityLabel: "Add item", size: 52, iconSize: 20, action: onAdd)
+                    GlassCircleButton(systemImage: "ellipsis", accessibilityLabel: "More", size: 52, iconSize: 20, action: onMore)
                 }
             }
 
-            HStack(alignment: .center, spacing: 12) {
-                Circle()
-                    .fill(Color.stacksSuccess)
-                    .frame(width: 14, height: 14)
+            HStack(alignment: .center, spacing: 10) {
+                AvatarView(profile: stack.author, size: 30)
 
                 Text(stack.author.displayName)
-                    .font(.stacksText(size: 30, weight: .semibold))
+                    .font(.stacksText(size: 28, weight: .semibold))
                     .foregroundStyle(Color.stacksInk)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.7)
+                    .minimumScaleFactor(0.62)
 
                 Spacer()
 
                 Text(stack.createdAt.stackHeaderDate)
-                    .font(.stacksText(size: 24, weight: .regular))
+                    .font(.stacksText(size: 22, weight: .regular))
                     .foregroundStyle(Color.stacksMutedInk)
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
@@ -164,11 +160,13 @@ private struct StackHeaderView: View {
                 .fill(Color.stacksDivider)
                 .frame(height: 1)
 
-            BlackPillButton(
-                title: isOwner ? "Add Item" : (stack.isFollowingAuthor ? "Following" : "Follow"),
-                systemImage: isOwner ? "plus" : (stack.isFollowingAuthor ? "checkmark" : "plus"),
-                action: onPrimary
-            )
+            if !isOwner {
+                BlackPillButton(
+                    title: stack.isFollowingAuthor ? "Following" : "Follow",
+                    systemImage: stack.isFollowingAuthor ? "checkmark" : "plus",
+                    action: onFollow
+                )
+            }
         }
     }
 }
@@ -243,4 +241,3 @@ private struct StackMoreSheet: View {
         }
     }
 }
-

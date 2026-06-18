@@ -54,5 +54,24 @@ final class StacksModelTests: XCTestCase {
         XCTAssertTrue(stack.wishlistMode)
         XCTAssertEqual(stack.ownerID, seed.currentUserID)
     }
-}
 
+    func testPendingSharedLinkStoreRoundTrips() throws {
+        PendingSharedLinkStore.clear()
+        let link = PendingSharedLink(url: URL(string: "https://example.com/jacket")!, title: "Jacket")
+
+        try PendingSharedLinkStore.save(link)
+
+        XCTAssertEqual(PendingSharedLinkStore.load(), link)
+        PendingSharedLinkStore.clear()
+        XCTAssertNil(PendingSharedLinkStore.load())
+    }
+
+    func testDiscoverSeedDataDoesNotStartWithProcessingSavedItems() {
+        let seed = MockSeedData()
+        let savedItems = seed.discoverStacks
+            .filter(\.isBookmarked)
+            .flatMap(\.items)
+
+        XCTAssertFalse(savedItems.contains { $0.removalStatus.isWorking })
+    }
+}

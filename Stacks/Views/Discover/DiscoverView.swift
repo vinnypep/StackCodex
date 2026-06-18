@@ -4,6 +4,7 @@ struct DiscoverView: View {
     @Environment(AppSession.self) private var session
     @Environment(\.appServices) private var services
     @State private var viewModel = DiscoverViewModel()
+    @State private var isShowingSearch = false
 
     let onOpenStack: (Stack) -> Void
     let onOpenProfile: (UserProfile) -> Void
@@ -11,13 +12,26 @@ struct DiscoverView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .center) {
                     Text("Discover")
                         .font(.stacksDisplay(size: 44, weight: .bold))
                         .foregroundStyle(Color.stacksInk)
-                    Text("Find creators, follow their Stacks, and bookmark the ones worth returning to.")
-                        .font(.stacksText(size: 16))
-                        .foregroundStyle(Color.stacksMutedInk)
+
+                    Spacer()
+
+                    GlassCircleButton(systemImage: "magnifyingglass", accessibilityLabel: "Search Discover", size: 42, iconSize: 17) {
+                        services.haptics.impact(.light)
+                        withAnimation(.snappy) {
+                            isShowingSearch.toggle()
+                        }
+                    }
+                }
+
+                if isShowingSearch {
+                    DiscoverSearchField(query: $viewModel.query) {
+                        Task { await viewModel.refresh(services: services, query: viewModel.query) }
+                    }
+                    .transition(.move(edge: .top).combined(with: .opacity))
                 }
 
                 savedStacks
@@ -30,10 +44,6 @@ struct DiscoverView: View {
         .background(Color.stacksCream.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
-        .searchable(text: $viewModel.query, placement: .navigationBarDrawer(displayMode: .always), prompt: "Username or Stack title")
-        .onSubmit(of: .search) {
-            Task { await viewModel.refresh(services: services, query: viewModel.query) }
-        }
         .onChange(of: viewModel.query) { _, newValue in
             guard newValue.isEmpty else { return }
             Task { await viewModel.refresh(services: services) }
@@ -48,37 +58,14 @@ struct DiscoverView: View {
 
     private var savedStacks: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Pinned / Saved")
+            Text("Saved")
                 .font(.stacksText(size: 20, weight: .bold))
                 .foregroundStyle(Color.stacksInk)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 14) {
-                    ForEach(viewModel.stacks.filter(\.isBookmarked)) { stack in
-                        Button {
-                            onOpenStack(stack)
-                        } label: {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text(stack.title)
-                                    .font(.stacksDisplay(size: 23, weight: .bold))
-                                    .foregroundStyle(Color.stacksInk)
-                                    .lineLimit(1)
-
-                                HStack(spacing: -8) {
-                                    ForEach(stack.items.prefix(3)) { item in
-                                        StickerImageView(item: item, size: 48)
-                                    }
-                                }
-
-                                Text("@\(stack.author.username)")
-                                    .font(.stacksText(size: 14, weight: .semibold))
-                                    .foregroundStyle(Color.stacksMutedInk)
-                            }
-                            .frame(width: 178, alignment: .leading)
-                            .padding(16)
-                            .background(.white.opacity(0.76), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-                        }
-                        .buttonStyle(.plain)
+            LazyVStack(spacing: 16) {
+                ForEach(viewModel.stacks.filter(\.isBookmarked)) { stack in
+                    SavedStackScrollCard(stack: stack) {
+                        onOpenStack(stack)
                     }
                 }
             }
@@ -132,11 +119,7 @@ struct DiscoverView: View {
                     onOpenProfile(creator)
                 } label: {
                     HStack(spacing: 14) {
-                        Text(creator.initials)
-                            .font(.stacksText(size: 18, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 52, height: 52)
-                            .background(Color.stacksInk, in: Circle())
+                        AvatarView(profile: creator, size: 52)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text(creator.displayName)
@@ -193,11 +176,7 @@ private struct DiscoverStackRow: View {
 
             HStack(alignment: .top, spacing: 12) {
                 Button(action: onProfile) {
-                    Text(stack.author.initials)
-                        .font(.stacksText(size: 16, weight: .bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 44, height: 44)
-                        .background(Color.stacksInk, in: Circle())
+                    AvatarView(profile: stack.author, size: 44)
                 }
                 .buttonStyle(.plain)
 
@@ -236,5 +215,89 @@ private struct DiscoverStackRow: View {
         }
         .padding(16)
         .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+    }
+}
+
+private struct DiscoverSearchField: View {
+    @Binding var query: String
+    let onSubmit: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Color.stacksMutedInk)
+
+            TextField("Username or Stack title", text: $query)
+                .font(.stacksText(size: 17))
+                .textInputAutocapitalization(.never)
+                .submitLabel(.search)
+                .onSubmit(onSubmit)
+
+            if !query.isEmpty {
+                Button {
+                    query = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(Color.stacksMutedInk)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 50)
+        .background(.white.opacity(0.82), in: Capsule())
+        .stacksGlass(cornerRadius: 25, interactive: true)
+    }
+}
+
+private struct SavedStackScrollCard: View {
+    let stack: Stack
+    let onOpen: () -> Void
+
+    var body: some View {
+        Button(action: onOpen) {
+            VStack(alignment: .leading, spacing: 12) {
+                GeometryReader { proxy in
+                    ZStack {
+                        Color.white
+                        ForEach(stack.items.prefix(7)) { item in
+                            StickerImageView(item: item, size: 72)
+                                .rotationEffect(.degrees(item.placement.rotationDegrees))
+                                .position(
+                                    x: proxy.size.width * item.placement.xRatio,
+                                    y: proxy.size.height * item.placement.yRatio
+                                )
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 330)
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+
+                HStack(spacing: 10) {
+                    AvatarView(profile: stack.author, size: 34)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(stack.displayTitle)
+                            .font(.stacksDisplay(size: 25, weight: .bold))
+                            .foregroundStyle(Color.stacksInk)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        Text("@\(stack.author.username)")
+                            .font(.stacksText(size: 14, weight: .medium))
+                            .foregroundStyle(Color.stacksMutedInk)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "bookmark.fill")
+                        .foregroundStyle(Color.stacksInk)
+                }
+            }
+            .padding(14)
+            .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+        }
+        .buttonStyle(.plain)
     }
 }

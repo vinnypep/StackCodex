@@ -146,7 +146,7 @@ struct MockSeedData: Sendable {
             affiliateURL: URL(string: "https://go.example.com/\(title.slugified)")!,
             originalImageURL: nil,
             removedBackgroundImageURL: nil,
-            removalStatus: title == "Live Laugh Dale Plate" ? .processing : .complete,
+            removalStatus: .complete,
             placement: StickerPlacement(xRatio: x, yRatio: y, scale: scale, rotationDegrees: rotation),
             addSource: .search,
             claimStatus: nil,

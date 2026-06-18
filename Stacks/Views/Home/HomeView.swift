@@ -13,10 +13,11 @@ struct HomeView: View {
     @State private var sheet: HomeSheet?
 
     let onOpenStack: (Stack) -> Void
+    let onOpenProfile: (UserProfile) -> Void
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 20) {
                 header
 
                 if viewModel.isLoading {
@@ -27,13 +28,7 @@ struct HomeView: View {
                         message: "Tap plus to make your first wishlist or visual collection."
                     )
                 } else {
-                    LazyVStack(spacing: 16) {
-                        ForEach(viewModel.stacks) { stack in
-                            StackCardView(stack: stack) {
-                                onOpenStack(stack)
-                            }
-                        }
-                    }
+                    WalletStackList(stacks: viewModel.stacks, onOpenStack: onOpenStack)
                 }
             }
             .padding(20)
@@ -63,20 +58,30 @@ struct HomeView: View {
 
     private var header: some View {
         HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("My Stacks")
-                    .font(.stacksDisplay(size: 44, weight: .bold))
-                    .foregroundStyle(Color.stacksInk)
-                Text("Your wishlists, references, and beautiful little piles.")
-                    .font(.stacksText(size: 16))
-                    .foregroundStyle(Color.stacksMutedInk)
-            }
+            Text("Stacks")
+                .font(.stacksDisplay(size: 46, weight: .bold))
+                .foregroundStyle(Color.stacksInk)
+                .lineLimit(1)
+                .minimumScaleFactor(0.78)
 
             Spacer()
 
-            GlassCircleButton(systemImage: "plus", accessibilityLabel: "Create stack") {
-                services.haptics.impact(.medium)
-                sheet = .createStack
+            HStack(spacing: 10) {
+                if let user = session.currentUser {
+                    Button {
+                        services.haptics.impact(.light)
+                        onOpenProfile(user)
+                    } label: {
+                        AvatarView(profile: user, size: 42)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Profile")
+                }
+
+                GlassCircleButton(systemImage: "plus", accessibilityLabel: "Create stack", size: 42, iconSize: 18) {
+                    services.haptics.impact(.medium)
+                    sheet = .createStack
+                }
             }
             .padding(.top, 4)
         }
@@ -98,19 +103,6 @@ private struct CreateStackSheet: View {
                     TextField("Title", text: $viewModel.createTitle)
                     Toggle("Wishlist mode", isOn: $viewModel.createWishlistMode)
                 }
-
-                Section {
-                    Button {
-                        Task {
-                            if let stack = await viewModel.createStack(services: services, user: user) {
-                                dismiss()
-                                onCreated(stack)
-                            }
-                        }
-                    } label: {
-                        Label("Create Stack", systemImage: "plus.circle.fill")
-                    }
-                }
             }
             .navigationTitle("New Stack")
             .navigationBarTitleDisplayMode(.inline)
@@ -120,6 +112,16 @@ private struct CreateStackSheet: View {
                         dismiss()
                     }
                 }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Create") {
+                        Task {
+                            if let stack = await viewModel.createStack(services: services, user: user) {
+                                dismiss()
+                                onCreated(stack)
+                            }
+                        }
+                    }
+                }
             }
         }
         .presentationDetents([.medium])
@@ -127,41 +129,63 @@ private struct CreateStackSheet: View {
     }
 }
 
-struct StackCardView: View {
+private struct WalletStackList: View {
+    let stacks: [Stack]
+    let onOpenStack: (Stack) -> Void
+
+    var body: some View {
+        LazyVStack(spacing: -190) {
+            ForEach(Array(stacks.enumerated()), id: \.element.id) { index, stack in
+                WalletStackCardView(stack: stack) {
+                    onOpenStack(stack)
+                }
+                .zIndex(Double(stacks.count - index))
+            }
+        }
+        .padding(.top, 4)
+        .padding(.bottom, CGFloat(max(stacks.count - 1, 0)) * 190 + 24)
+    }
+}
+
+struct WalletStackCardView: View {
     let stack: Stack
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: 16) {
-                StackPreviewCanvas(items: stack.items)
-                    .frame(height: 190)
-                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text(stack.displayTitle)
+                        .font(.stacksDisplay(size: 31, weight: .bold))
+                        .foregroundStyle(Color.stacksInk)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.58)
+                        .allowsTightening(true)
 
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(alignment: .firstTextBaseline) {
-                        Text(stack.displayTitle)
-                            .font(.stacksDisplay(size: 28, weight: .bold))
-                            .foregroundStyle(Color.stacksInk)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.72)
-                        Spacer()
-                        Image(systemName: stack.visibility == .private ? "lock.fill" : "globe")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(Color.stacksMutedInk)
-                    }
+                    Spacer()
 
-                    Text("\(stack.items.count) items by \(stack.author.displayName)")
-                        .font(.stacksText(size: 15, weight: .medium))
+                    Image(systemName: stack.visibility == .private ? "lock.fill" : "globe")
+                        .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(Color.stacksMutedInk)
                 }
+
+                StackPreviewCanvas(items: stack.items)
+                    .frame(height: 224)
+                    .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+
+                Text("\(stack.items.count) items by \(stack.author.displayName)")
+                    .font(.stacksText(size: 15, weight: .medium))
+                    .foregroundStyle(Color.stacksMutedInk)
+                    .lineLimit(1)
             }
-            .padding(16)
-            .background(.white.opacity(0.78), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+            .padding(17)
+            .frame(maxWidth: .infinity)
+            .background(.white.opacity(0.84), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 32, style: .continuous)
                     .stroke(.white.opacity(0.8), lineWidth: 1)
             }
+            .shadow(color: .black.opacity(0.08), radius: 24, x: 0, y: 14)
         }
         .buttonStyle(.plain)
     }
@@ -186,4 +210,3 @@ private struct StackPreviewCanvas: View {
         }
     }
 }
-

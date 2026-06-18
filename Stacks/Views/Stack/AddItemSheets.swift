@@ -1,5 +1,6 @@
 import PhotosUI
 import SwiftUI
+import UIKit
 
 struct AddItemOptionsSheet: View {
     let onSelect: (AddItemSource) -> Void
@@ -58,10 +59,7 @@ struct SearchAddItemSheet: View {
                             }
                         } label: {
                             HStack(spacing: 14) {
-                                Text(result.demoGlyph ?? "🧩")
-                                    .font(.system(size: 34))
-                                    .frame(width: 52, height: 52)
-                                    .background(Color.stacksCream, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                ProductResultThumbnail(result: result)
 
                                 VStack(alignment: .leading, spacing: 5) {
                                     Text(result.title)
@@ -100,6 +98,31 @@ struct SearchAddItemSheet: View {
         formatter.currencyCode = "USD"
         formatter.maximumFractionDigits = 0
         return formatter.string(from: price as NSDecimalNumber) ?? "$\(price)"
+    }
+}
+
+private struct ProductResultThumbnail: View {
+    let result: ProductSearchResult
+
+    var body: some View {
+        AsyncImage(url: result.imageURL ?? DemoProductImageCatalog.url(for: result.title)) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .scaledToFit()
+            case .empty:
+                ProgressView()
+                    .tint(Color.stacksInk)
+            default:
+                Image(systemName: "shippingbox.fill")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundStyle(Color.stacksInk.opacity(0.7))
+            }
+        }
+        .frame(width: 52, height: 52)
+        .padding(6)
+        .background(Color.stacksCream, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 }
 
@@ -158,6 +181,7 @@ struct ManualPhotoAddItemSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = AddItemViewModel()
     @State private var selectedPhoto: PhotosPickerItem?
+    @State private var isShowingCamera = false
     @State private var isSaving = false
 
     let onAdd: (String, String, Data?) async -> Void
@@ -166,8 +190,16 @@ struct ManualPhotoAddItemSheet: View {
         NavigationStack {
             Form {
                 Section("Photo") {
+                    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                        Button {
+                            isShowingCamera = true
+                        } label: {
+                            Label("Take Picture", systemImage: "camera")
+                        }
+                    }
+
                     PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                        Label(viewModel.selectedImageData == nil ? "Take or Choose Picture" : "Picture Selected", systemImage: "camera")
+                        Label(viewModel.selectedImageData == nil ? "Choose from Library" : "Picture Selected", systemImage: "photo.on.rectangle")
                     }
                 }
 
@@ -203,6 +235,10 @@ struct ManualPhotoAddItemSheet: View {
                 guard let selectedPhoto else { return }
                 viewModel.selectedImageData = try? await selectedPhoto.loadTransferable(type: Data.self)
             }
+            .sheet(isPresented: $isShowingCamera) {
+                CameraCaptureView(imageData: $viewModel.selectedImageData)
+                    .ignoresSafeArea()
+            }
         }
     }
 
@@ -212,6 +248,45 @@ struct ManualPhotoAddItemSheet: View {
         Task {
             await onAdd(viewModel.manualTitle, viewModel.manualLink, viewModel.selectedImageData)
             isSaving = false
+            dismiss()
+        }
+    }
+}
+
+private struct CameraCaptureView: UIViewControllerRepresentable {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var imageData: Data?
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(imageData: $imageData, dismiss: dismiss)
+    }
+
+    final class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        @Binding private var imageData: Data?
+        private let dismiss: DismissAction
+
+        init(imageData: Binding<Data?>, dismiss: DismissAction) {
+            _imageData = imageData
+            self.dismiss = dismiss
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                imageData = image.jpegData(compressionQuality: 0.9)
+            }
+            dismiss()
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             dismiss()
         }
     }

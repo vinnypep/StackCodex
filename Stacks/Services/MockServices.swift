@@ -193,9 +193,9 @@ actor MockProductSearchService: ProductSearchService {
                 price: 64,
                 currencyCode: "USD",
                 sourceURL: URL(string: "https://example.com/products/\(cleanQuery.linkSlug)-studio")!,
-                imageURL: nil,
+                imageURL: DemoProductImageCatalog.url(for: cleanQuery),
                 shortDescription: "A clean, collectible take on \(cleanQuery.lowercased()), ready to float on a Stack.",
-                demoGlyph: cleanQuery.bestDemoGlyph
+                demoGlyph: nil
             ),
             ProductSearchResult(
                 id: UUID(),
@@ -204,9 +204,9 @@ actor MockProductSearchService: ProductSearchService {
                 price: 28,
                 currencyCode: "USD",
                 sourceURL: URL(string: "https://example.com/products/\(cleanQuery.linkSlug)-mini")!,
-                imageURL: nil,
+                imageURL: DemoProductImageCatalog.url(for: "\(cleanQuery) mini"),
                 shortDescription: "Tiny, graphic, and exactly the kind of thing people ask about.",
-                demoGlyph: "✨"
+                demoGlyph: nil
             )
         ]
     }
@@ -229,13 +229,13 @@ actor MockProductSearchService: ProductSearchService {
             sourceURL: url,
             buyURL: url,
             affiliateURL: nil,
-            originalImageURL: nil,
+            originalImageURL: DemoProductImageCatalog.url(for: title),
             removedBackgroundImageURL: nil,
             removalStatus: .processing,
             placement: placement,
             addSource: .pastedLink,
             claimStatus: nil,
-            demoGlyph: "🛍️"
+            demoGlyph: nil
         )
     }
 }
@@ -290,7 +290,15 @@ actor MockStorageService: StorageService {
         guard !data.isEmpty else {
             throw AppError.missingRequiredField("Image")
         }
-        return URL(string: "https://storage.example.com/\(preferredName.linkSlug).jpg")!
+
+        let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("OriginalUploads", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+
+        let fileName = "\(preferredName.linkSlug)-\(UUID().uuidString).jpg"
+        let url = directory.appendingPathComponent(fileName)
+        try data.write(to: url, options: [.atomic])
+        return url
     }
 }
 

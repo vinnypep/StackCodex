@@ -5,54 +5,35 @@ struct ProductDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 28) {
-                ZStack {
-                    Circle()
-                        .fill(.white.opacity(0.88))
-                        .frame(width: 270, height: 270)
-                        .stacksGlass(cornerRadius: 135)
+            VStack(spacing: 30) {
+                StickerImageView(item: item, size: 260)
+                    .rotationEffect(.degrees(item.placement.rotationDegrees))
+                    .padding(.top, 42)
 
-                    StickerImageView(item: item, size: 220)
-                        .rotationEffect(.degrees(item.placement.rotationDegrees))
-                }
-                .padding(.top, 34)
-
-                VStack(spacing: 10) {
-                    Text(item.brand)
-                        .font(.stacksText(size: 15, weight: .semibold))
-                        .textCase(.uppercase)
-                        .tracking(1.2)
-                        .foregroundStyle(Color.stacksMutedInk)
-
+                VStack(spacing: 18) {
                     Text(item.title)
-                        .font(.stacksDisplay(size: 38, weight: .bold))
+                        .font(.stacksDisplay(size: 54, weight: .bold))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(Color.stacksInk)
                         .lineLimit(3)
-                        .minimumScaleFactor(0.72)
+                        .minimumScaleFactor(0.58)
+                        .allowsTightening(true)
 
                     Text(item.shortDescription)
-                        .font(.instrumentSerifItalic(size: 24))
+                        .font(.instrumentSerifItalic(size: 28))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(Color.stacksInk.opacity(0.78))
                         .lineSpacing(4)
-                        .padding(.top, 8)
                 }
                 .padding(.horizontal, 24)
+                .padding(.vertical, 22)
+                .stacksGlass(cornerRadius: 30)
+                .padding(.horizontal, 18)
 
                 Link(destination: item.purchaseURL) {
-                    HStack {
-                        Text("Buy Now")
-                        Spacer()
-                        Text(item.formattedPrice)
-                    }
-                    .font(.stacksText(size: 18, weight: .bold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 24)
-                    .frame(height: 62)
-                    .background(Color.stacksInk, in: Capsule())
+                    GlassBuyButtonContent(price: item.formattedPrice)
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 22)
 
                 VStack(alignment: .leading, spacing: 12) {
                     DetailRow(label: "Source", value: item.sourceURL.host ?? item.sourceURL.absoluteString)
@@ -60,14 +41,35 @@ struct ProductDetailView: View {
                     DetailRow(label: "Background", value: item.removalStatus.rawValue.capitalized)
                 }
                 .padding(18)
-                .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .padding(.horizontal, 24)
+                .stacksGlass(cornerRadius: 24)
+                .padding(.horizontal, 22)
             }
             .padding(.bottom, 34)
         }
-        .background(Color.stacksCream.ignoresSafeArea())
+        .background(Color.white.ignoresSafeArea())
         .navigationTitle("Product")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct GlassBuyButtonContent: View {
+    let price: String
+
+    var body: some View {
+        HStack {
+            Text("Buy Now")
+            Spacer()
+            Text(price)
+        }
+        .font(.stacksText(size: 18, weight: .bold))
+        .foregroundStyle(Color.stacksInk)
+        .padding(.horizontal, 24)
+        .frame(height: 62)
+        .stacksGlass(cornerRadius: 31, interactive: true)
+        .overlay {
+            Capsule()
+                .stroke(Color.stacksInk.opacity(0.16), lineWidth: 1)
+        }
     }
 }
 
@@ -87,4 +89,3 @@ private struct DetailRow: View {
         .font(.stacksText(size: 15, weight: .medium))
     }
 }
-
