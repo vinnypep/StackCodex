@@ -50,7 +50,7 @@ struct AppServices: @unchecked Sendable {
 }
 
 private struct AppServicesKey: EnvironmentKey {
-    static var defaultValue: AppServices { .mock() }
+    nonisolated(unsafe) static var defaultValue: AppServices { .mock() }
 }
 
 extension EnvironmentValues {
