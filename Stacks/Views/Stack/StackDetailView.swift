@@ -44,18 +44,15 @@ struct StackDetailView: View {
                     onMore: {
                         services.haptics.impact(.light)
                         sheet = .more
-                    },
-                    onFollow: {
-                        services.haptics.impact(.medium)
                     }
                 )
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 20)
                 .padding(.top, 18)
 
                 EditorialProductGridView(items: viewModel.stack.items, onTap: onOpenProduct)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 58)
-                    .padding(.bottom, 56)
+                    .padding(.horizontal, 22)
+                    .padding(.top, 44)
+                    .padding(.bottom, 64)
             }
         }
         .background(Color.white.ignoresSafeArea())
@@ -120,55 +117,39 @@ private struct EditorialStackHeaderView: View {
     let isOwner: Bool
     let onAdd: () -> Void
     let onMore: () -> Void
-    let onFollow: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .top, spacing: 10) {
-                Text(stack.title)
-                    .font(.stacksDisplay(size: 88, weight: .black))
-                    .foregroundStyle(Color.stacksInk)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.28)
-                    .allowsTightening(true)
-
-                Spacer(minLength: 0)
-
-                HStack(spacing: 8) {
-                    if isOwner {
-                        Button(action: onAdd) {
-                            Image(systemName: "plus")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(Color.stacksInk)
-                                .frame(width: 38, height: 38)
-                                .background(Color.black.opacity(0.055), in: Circle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("Add item")
-                    }
-
-                    Button(action: onMore) {
-                        Image(systemName: "ellipsis")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(Color.stacksInk)
-                            .frame(width: 38, height: 38)
-                            .background(Color.black.opacity(0.055), in: Circle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("More")
-                }
-                .padding(.top, 14)
-            }
+        VStack(spacing: 10) {
+            Text(stack.title)
+                .font(.stacksDisplay(size: 72, weight: .black))
+                .foregroundStyle(Color.stacksInk)
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
+                .minimumScaleFactor(0.36)
+                .allowsTightening(true)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, isOwner ? 92 : 52)
 
             Text(stackDescription)
-                .font(.stacksText(size: 15, weight: .black))
+                .font(.stacksText(size: 14, weight: .black))
                 .foregroundStyle(Color.stacksInk)
+                .multilineTextAlignment(.center)
                 .textCase(.uppercase)
-                .lineLimit(4)
-                .minimumScaleFactor(0.72)
+                .lineLimit(5)
+                .minimumScaleFactor(0.78)
                 .allowsTightening(true)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.trailing, 24)
+                .frame(maxWidth: 430)
+        }
+        .frame(maxWidth: .infinity)
+        .overlay(alignment: .topTrailing) {
+            HStack(spacing: 8) {
+                if isOwner {
+                    EditorialActionButton(systemImage: "plus", accessibilityLabel: "Add item", action: onAdd)
+                }
+
+                EditorialActionButton(systemImage: "ellipsis", accessibilityLabel: "More", action: onMore)
+            }
         }
     }
 
@@ -181,38 +162,47 @@ private struct EditorialStackHeaderView: View {
     }
 }
 
+private struct EditorialActionButton: View {
+    let systemImage: String
+    let accessibilityLabel: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(Color.stacksInk)
+                .frame(width: 38, height: 38)
+                .background(Color.black.opacity(0.055), in: Circle())
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
+    }
+}
+
 private struct EditorialProductGridView: View {
     let items: [StackItem]
     let onTap: (StackItem) -> Void
 
-    var body: some View {
-        GeometryReader { proxy in
-            let columnSpacing = max(18, proxy.size.width * 0.055)
-            let rowSpacing = max(48, proxy.size.width * 0.14)
-            let itemSize = max(68, (proxy.size.width - columnSpacing * 3) / 4)
-            let columns = Array(
-                repeating: GridItem(.flexible(minimum: 54, maximum: itemSize), spacing: columnSpacing, alignment: .center),
-                count: 4
-            )
+    private let columns = Array(
+        repeating: GridItem(.flexible(minimum: 62), spacing: 22, alignment: .center),
+        count: 4
+    )
 
-            LazyVGrid(columns: columns, alignment: .center, spacing: rowSpacing) {
-                ForEach(items) { item in
-                    Button(action: { onTap(item) }) {
-                        StickerImageView(item: item, size: min(138, itemSize * 1.22))
-                            .rotationEffect(.degrees(0))
-                            .frame(width: itemSize, height: itemSize * 1.18)
-                    }
-                    .buttonStyle(.plain)
-                    .zIndex(item.removalStatus.isWorking ? 20 : 1)
+    var body: some View {
+        LazyVGrid(columns: columns, alignment: .center, spacing: 46) {
+            ForEach(items) { item in
+                Button(action: { onTap(item) }) {
+                    StickerImageView(item: item, size: 86)
+                        .rotationEffect(.degrees(0))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 102)
                 }
+                .buttonStyle(.plain)
+                .zIndex(item.removalStatus.isWorking ? 20 : 1)
             }
         }
-        .frame(minHeight: gridHeight)
-    }
-
-    private var gridHeight: CGFloat {
-        let rows = max(1, Int(ceil(Double(items.count) / 4.0)))
-        return CGFloat(rows) * 138 + CGFloat(max(0, rows - 1)) * 54
     }
 }
 

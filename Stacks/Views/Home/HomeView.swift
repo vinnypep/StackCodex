@@ -134,7 +134,7 @@ private struct WalletStackList: View {
     let onOpenStack: (Stack) -> Void
 
     var body: some View {
-        LazyVStack(spacing: -190) {
+        LazyVStack(spacing: -118) {
             ForEach(Array(stacks.enumerated()), id: \.element.id) { index, stack in
                 WalletStackCardView(stack: stack) {
                     onOpenStack(stack)
@@ -143,7 +143,7 @@ private struct WalletStackList: View {
             }
         }
         .padding(.top, 4)
-        .padding(.bottom, CGFloat(max(stacks.count - 1, 0)) * 190 + 24)
+        .padding(.bottom, CGFloat(max(stacks.count - 1, 0)) * 118 + 24)
     }
 }
 
