@@ -64,7 +64,32 @@ struct EdgeFunctionProductSearchService: ProductSearchService {
     }
 
     func productFromPastedLink(_ url: URL, stackID: UUID, placement: StickerPlacement) async throws -> StackItem {
-        throw AppError.configurationRequired("link-parser edge function")
+        guard url.scheme?.hasPrefix("http") == true else {
+            throw AppError.invalidURL
+        }
+
+        let imageURL = await ProductPageImageExtractor.bestProductImageURL(for: url)
+        let title = (url.host ?? "Linked Find").replacingOccurrences(of: "www.", with: "").capitalized
+
+        return StackItem(
+            id: UUID(),
+            stackID: stackID,
+            title: title,
+            brand: "Linked Product",
+            shortDescription: "A linked product saved from the web.",
+            price: 0,
+            currencyCode: "USD",
+            sourceURL: url,
+            buyURL: url,
+            affiliateURL: nil,
+            originalImageURL: imageURL,
+            removedBackgroundImageURL: nil,
+            removalStatus: .processing,
+            placement: placement,
+            addSource: .pastedLink,
+            claimStatus: nil,
+            demoGlyph: nil
+        )
     }
 }
 
@@ -102,4 +127,3 @@ struct SupabaseRealtimeService: RealtimeService {
     func watchStack(id: UUID) async {}
     func stopWatchingStack(id: UUID) async {}
 }
-

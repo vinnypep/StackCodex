@@ -74,4 +74,24 @@ final class StacksModelTests: XCTestCase {
 
         XCTAssertFalse(savedItems.contains { $0.removalStatus.isWorking })
     }
+
+    func testProductPageImageExtractorPrefersFrontWhiteProductImage() {
+        let html = """
+        <meta property="og:image" content="http://example.com/cdn/shop/files/lifestyle-scene.jpg">
+        <img alt="Model wearing oven" src="https://example.com/cdn/shop/files/model-side.jpg">
+        <img alt="Arc XL front facing product white background" src="https://example.com/cdn/shop/files/arc-xl-front-white-1200x1200.png">
+        <img alt="Logo" src="https://example.com/logo.png">
+        <img src="sizeImage(item.image, 800)">
+        """
+
+        let imageURL = ProductPageImageExtractor.bestImageURL(
+            in: html,
+            baseURL: URL(string: "https://example.com/products/arc-xl")!
+        )
+
+        XCTAssertEqual(
+            imageURL?.absoluteString,
+            "https://example.com/cdn/shop/files/arc-xl-front-white-1200x1200.png"
+        )
+    }
 }

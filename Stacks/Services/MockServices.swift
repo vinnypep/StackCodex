@@ -218,6 +218,7 @@ actor MockProductSearchService: ProductSearchService {
         try await Task.sleep(for: .milliseconds(350))
 
         let title = (url.host ?? "Linked Find").replacingOccurrences(of: "www.", with: "").capitalized
+        let productImageURL = await ProductPageImageExtractor.bestProductImageURL(for: url)
         return StackItem(
             id: UUID(),
             stackID: stackID,
@@ -229,7 +230,7 @@ actor MockProductSearchService: ProductSearchService {
             sourceURL: url,
             buyURL: url,
             affiliateURL: nil,
-            originalImageURL: DemoProductImageCatalog.url(for: title),
+            originalImageURL: productImageURL ?? DemoProductImageCatalog.url(for: title),
             removedBackgroundImageURL: nil,
             removalStatus: .processing,
             placement: placement,

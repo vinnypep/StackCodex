@@ -53,6 +53,7 @@
 		A0000000000000000000002C /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000002F /* ShareViewController.swift */; };
 		A0000000000000000000002D /* PendingSharedLinkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000002C /* PendingSharedLinkStore.swift */; };
 		A0000000000000000000002E /* StacksShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B00000000000000000000032 /* StacksShareExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A0000000000000000000002F /* ProductPageImageExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000033 /* ProductPageImageExtractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +138,7 @@
 		B00000000000000000000030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info.plist"; sourceTree = "<group>"; };
 		B00000000000000000000031 /* StacksShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "StacksShareExtension.entitlements"; sourceTree = "<group>"; };
 		B00000000000000000000032 /* StacksShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "StacksShareExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000033 /* ProductPageImageExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.swift"; path = "Services/ProductPageImageExtractor.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 				B0000000000000000000000B /* MockServices.swift */,
 				B0000000000000000000002B /* AppleVisionBackgroundRemovalService.swift */,
 				B0000000000000000000002C /* PendingSharedLinkStore.swift */,
+				B00000000000000000000033 /* ProductPageImageExtractor.swift */,
 				B0000000000000000000000C /* ProductionServicePlaceholders.swift */,
 				B0000000000000000000000D /* ServiceProtocols.swift */,
 				B0000000000000000000000E /* AddItemViewModel.swift */,
@@ -370,6 +373,7 @@
 				A0000000000000000000000B /* MockServices.swift in Sources */,
 				A00000000000000000000028 /* AppleVisionBackgroundRemovalService.swift in Sources */,
 				A00000000000000000000029 /* PendingSharedLinkStore.swift in Sources */,
+				A0000000000000000000002F /* ProductPageImageExtractor.swift in Sources */,
 				A0000000000000000000000C /* ProductionServicePlaceholders.swift in Sources */,
 				A0000000000000000000000D /* ServiceProtocols.swift in Sources */,
 				A0000000000000000000000E /* AddItemViewModel.swift in Sources */,
